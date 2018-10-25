@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" 
+    xmlns:android="http://schemas.android.com/apk/res/android" id="com-tillerstack-cordova-plugin-background" version="1.0.0">
+    <name>Background</name>
+    <description>Tillerstack Cordova Background Plugin</description>
+    <repo>https://github.com/andrefromberlin/com-tillerstack-cordova-plugin-background.git</repo>
+    <license>MIT</license>
+    <author>André Fiedler for Tillerstack GmbH</author>
+    <keywords>cordova, background</keywords>
+
+    <!-- cordova -->
+    <engines>
+        <engine name="cordova" version=">=3.0.0" />
+        <engine name="android-sdk" version=">=16" />
+    </engines>
+
+    <!-- js -->
+    <js-module src="www/Background.js" name="Background">
+        <clobbers target="navigator.background" />
+    </js-module>
+
+
+    <!-- android -->
+    <platform name="android">
+
+        <source-file src="src/android/Background.java" target-dir="src/de/condat/ssc/mobile/cordova/plugin/background"/>
+
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="Background">
+                <param name="android-package" value="de.condat.ssc.mobile.cordova.plugin.background.Background"/>
+            </feature>
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/*">
+            <uses-permission android:name="android.permission.WAKE_LOCK" />
+        </config-file>
+
+    </platform>
+</plugin>
