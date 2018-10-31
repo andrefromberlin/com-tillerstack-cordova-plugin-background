@@ -31,90 +31,92 @@ Or install from local source:
 
     $ cordova plugin add com-tillerstack-cordova-plugin-background --searchpath <path>
 
-## Usage - ADJUSTALL
+## Usage
 
-The plugin creates the object `cordova.plugins.backgroundMode` and is accessible after the _deviceready_ event has been fired.
+The plugin creates the object `navigator.background` and is accessible after the _deviceready_ event has been fired.
 
 ```js
 document.addEventListener(
   "deviceready",
   function() {
-    // cordova.plugins.backgroundMode is now available
+    // navigator.background is now available
   },
   false
 );
 ```
 
-### Enable the background mode
+### Register for background wakeups
 
-The plugin is not enabled by default. Once it has been enabled the mode becomes active if the app moves to background.
+You need to register and unregister for being woken up regularly while the app is in background. During Registration you are required to provide 
+- a callback function that is being called whenever the plugin detects app lifecycle changes you might want to react on and set wakeup alarms or such
+- a callback function that is being called whenever the plugin detects an error while trying to perform duties on background handling
 
-```js
-cordova.plugins.backgroundMode.enable();
-// or
-cordova.plugins.backgroundMode.setEnabled(true);
-```
-
-To disable the background mode:
+To register:
 
 ```js
-cordova.plugins.backgroundMode.disable();
-// or
-cordova.plugins.backgroundMode.setEnabled(false);
+if (navigator.background) {
+    navigator.background.register(cbOnPluginMessage, cbOnPluginErrorOccurred);
+}
 ```
 
-### Check if running in background
-
-Once the plugin has been enabled and the app has entered the background, the background mode becomes active.
+To unregister:
 
 ```js
-cordova.plugins.backgroundMode.isActive(); // => boolean
+if (navigator.background) {
+    navigator.background.unregister(cbOnSuccess, cbOnError);
+}
 ```
 
-A non-active mode means that the app is in foreground.
+### Receive a plugin message
 
-### Listen for events
-
-The plugin fires an event each time its status has been changed. These events are `enable`, `disable`, `activate`, `deactivate` and `failure`.
+Once the plugin detects app lifecycle changes it can be used to set a regular wakeup call for the app in order to allow a regular small app execution task.
 
 ```js
-cordova.plugins.backgroundMode.on('EVENT', function);
+function cbOnPluginMessage(result) {
+    if (result && result.state !== backgroundEnvironmentStates.UNDEFINED) {
+      // you could, for example..
+      // - broadcast the environment state change in your entire app
+      // $rootScope.$broadcast(result.state);
+
+      // ... and / or
+      // - depending on the state, set or cancel ALARMs
+      if (
+        result.state === backgroundEnvironmentStates.ACTIVITY_PAUSED ||
+        result.state === backgroundEnvironmentStates.ALARM_WAKEUP_ONCE
+      ) {
+        setAlarm();
+      } else if (
+        result.state === backgroundEnvironmentStates.ACTIVITY_RESUMED
+      ) {
+        cancelAlarm();
+      }
+    } else if (result !== 'OK') {
+      console.log('Plugin message was not "OK": ' + result);
+    }
+  }
 ```
 
-To remove an event listeners:
+### Set and cancel wakeup alarms
+
+The plugin can be used to set an OS alarm to be woken up on a specific time regularly. Depending on the Android Version this is internally either set up once as a recurring alarm, or set up as a starting single alarm which is reset every time it got triggered.
+
+When creating an alarm you have to specify the amount of seconds you want to be woken up after once the alarm is set. As the transfer object is a parameters array, yoh need to declare the seconds as the first (and only) array object.
+
+To set an alarm:
 
 ```js
-cordova.plugins.backgroundMode.un('EVENT', function);
+if (navigator.background) {
+      navigator.background.setAlarm(cbOnSuccess, cbOnError, [seconds]);
+}
 ```
 
-## Android specifics
-
-### Transit between application states
-
-Android allows to programmatically move from foreground to background or vice versa.
+To cancel an alarm:
 
 ```js
-cordova.plugins.backgroundMode.moveToBackground();
-// or
-cordova.plugins.backgroundMode.moveToForeground();
+if (navigator.background) {
+      navigator.background.cancelAlarm(cbOnSuccess, cbOnError);
+}
 ```
-
-### Unlock and wake-up
-
-A wake-up turns on the screen while unlocking moves the app to foreground even the device is locked.
-
-```js
-// Turn screen on
-cordova.plugins.backgroundMode.wakeUp();
-// Turn screen on and show app even locked
-cordova.plugins.backgroundMode.unlock();
-```
-
-## Quirks
-
-Any?
-
-**Note:** Something..
 
 ## Contributing
 
@@ -134,5 +136,5 @@ This software is released under the [MIT License][mit_license].
 [cli]: http://cordova.apache.org/docs/en/edge/guide_cli_index.md.html#The%20Command-line%20Interface
 [npm]: ???
 [changelog]: CHANGELOG.md
-[mit_license]: http://opensource.org/licenses/Apache-2.0
+[mit_license]: https://opensource.org/licenses/MIT
 [tillerstack]: http://www.tillerstack.com

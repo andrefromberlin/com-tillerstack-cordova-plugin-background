@@ -1,0 +1,38 @@
+{
+  "name": "com-tillerstack-cordova-plugin-background",
+  "version": "1.0.0",
+  "description": "Perform regular wakeup to allow short execution while app is in background.",
+  "cordova": {
+    "id": "com-tillerstack-cordova-plugin-background",
+    "platforms": [
+      "android",
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andrefromberlin/com-tillerstack-cordova-plugin-background.git"
+  },
+  "keywords": [
+    "tillerstack",
+    "wakeup",
+    "background",
+    "ecosystem:cordova",
+    "cordova-android"
+  ],
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.0.0"
+    },
+    {
+      "name": "android-sdk",
+      "version": ">=16"
+    }
+  ],
+  "author": "André Fiedler for Tillerstack",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/andrefromberlin/com-tillerstack-cordova-plugin-background/issues"
+  },
+  "homepage": "https://github.com/andrefromberlin/com-tillerstack-cordova-plugin-background#readme"
+}
