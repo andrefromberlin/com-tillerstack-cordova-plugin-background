@@ -5,7 +5,7 @@
   "cordova": {
     "id": "com-tillerstack-cordova-plugin-background",
     "platforms": [
-      "android",
+      "android"
     ]
   },
   "repository": {
