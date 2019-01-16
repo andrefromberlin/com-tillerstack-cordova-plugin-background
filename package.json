@@ -1,6 +1,6 @@
 {
   "name": "com-tillerstack-cordova-plugin-background",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Perform regular wakeup to allow short execution while app is in background.",
   "cordova": {
     "id": "com-tillerstack-cordova-plugin-background",

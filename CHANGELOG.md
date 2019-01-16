@@ -1,5 +1,9 @@
 ## ChangeLog
 
+#### Version 1.0.1 (16.01.2019)
+
+- adjusted a KitKat+ and Marshmallow+ specfic parameter for alarm management to ensure exact wakeup
+
 #### Version 1.0.0 (25.10.2018)
 
 - pushed to GitHub and set public
