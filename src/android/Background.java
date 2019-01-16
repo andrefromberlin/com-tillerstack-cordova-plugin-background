@@ -329,7 +329,7 @@ public class Background extends CordovaPlugin  {
     @TargetApi(19)
     private void setAlarmFromKitkat(AlarmManager am, long ms, PendingIntent pi){
         Log.i(LOG_TAG, "Method 'setAlarmFromKitkat()' called @" + this.hash);
-        am.setExact(AlarmManager.RTC_WAKEUP, ms, pi);
+        am.setExact(AlarmManager.RTC, ms, pi);
     }
 
     /**
@@ -338,7 +338,7 @@ public class Background extends CordovaPlugin  {
     @TargetApi(23)
     private void setAlarmFromMarshmallow(AlarmManager am, long ms, PendingIntent pi){
         Log.i(LOG_TAG, "Method 'setAlarmFromMarshmallow()' called @" + this.hash);
-        am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, ms, pi);
+        am.setExactAndAllowWhileIdle(AlarmManager.RTC, ms, pi);
     }
 
     /**
